@@ -1,0 +1,5 @@
+--CREATE DATABASE people CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+CREATE DATABASE people CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE USER upeople@localhost IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON people.* TO upeople@localhost;
+FLUSH PRIVILEGES;

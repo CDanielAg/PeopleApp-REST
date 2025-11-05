@@ -1,14 +1,14 @@
 <?php
 
-class productos
+class contactos
 {
-    const NOMBRE_TABLA = "producto";
-    const ID_PRODUCTO = "idProducto";
-    const NOMBRE_PRODUCTO = "nombreProducto";
-    const DESCRIPCION = "descripcion";
-    const PRECIO = "precio";
-    const STOCK = "stock";
-    const CATEGORIA = "categoria";
+
+    const NOMBRE_TABLA = "contacto";
+    const ID_CONTACTO = "idContacto";
+    const PRIMER_NOMBRE = "primerNombre";
+    const PRIMER_APELLIDO = "primerApellido";
+    const TELEFONO = "telefono";
+    const CORREO = "correo";
     const ID_USUARIO = "idUsuario";
 
     const CODIGO_EXITO = 1;
@@ -23,9 +23,10 @@ class productos
         $idUsuario = usuarios::autorizar();
 
         if (empty($peticion[0]))
-            return (new productos)->obtenerProductos($idUsuario);
+            return (new contactos)->obtenerContactos($idUsuario);
         else
-            return (new productos)->obtenerProductos($idUsuario, $peticion[0]);
+            return (new contactos)->obtenerContactos($idUsuario, $peticion[0]);
+
     }
 
     public static function post($peticion)
@@ -33,16 +34,17 @@ class productos
         $idUsuario = usuarios::autorizar();
 
         $body = file_get_contents('php://input');
-        $producto = json_decode($body);
+        $contacto = json_decode($body);
 
-        $idProducto = (new productos)->crear($idUsuario, $producto);
+        $idContacto = (new contactos)->crear($idUsuario, $contacto);
 
         http_response_code(201);
         return [
             "estado" => self::CODIGO_EXITO,
-            "mensaje" => "Producto creado",
-            "id" => $idProducto
+            "mensaje" => "Contacto creado",
+            "id" => $idContacto
         ];
+
     }
 
     public static function put($peticion)
@@ -51,9 +53,9 @@ class productos
 
         if (!empty($peticion[0])) {
             $body = file_get_contents('php://input');
-            $producto = json_decode($body);
+            $contacto = json_decode($body);
 
-            if ((new productos)->actualizar($idUsuario, $producto, $peticion[0]) > 0) {
+            if ((new contactos)->actualizar($idUsuario, $contacto, $peticion[0]) > 0) {
                 http_response_code(200);
                 return [
                     "estado" => self::CODIGO_EXITO,
@@ -61,7 +63,7 @@ class productos
                 ];
             } else {
                 throw new ExcepcionApi(self::ESTADO_NO_ENCONTRADO,
-                    "El producto al que intentas acceder no existe", 404);
+                    "El contacto al que intentas acceder no existe", 404);
             }
         } else {
             throw new ExcepcionApi(self::ESTADO_ERROR_PARAMETROS, "Falta id", 422);
@@ -73,7 +75,7 @@ class productos
         $idUsuario = usuarios::autorizar();
 
         if (!empty($peticion[0])) {
-            if ((new productos)->eliminar($idUsuario, $peticion[0]) > 0) {
+            if ((new contactos)->eliminar($idUsuario, $peticion[0]) > 0) {
                 http_response_code(200);
                 return [
                     "estado" => self::CODIGO_EXITO,
@@ -81,24 +83,25 @@ class productos
                 ];
             } else {
                 throw new ExcepcionApi(self::ESTADO_NO_ENCONTRADO,
-                    "El producto al que intentas acceder no existe", 404);
+                    "El contacto al que intentas acceder no existe", 404);
             }
         } else {
             throw new ExcepcionApi(self::ESTADO_ERROR_PARAMETROS, "Falta id", 422);
         }
+
     }
 
     /**
-     * Obtiene la colecciÃ³n de productos o un solo producto indicado por el identificador
+     * Obtiene la colección de contactos o un solo contacto indicado por el identificador
      * @param int $idUsuario identificador del usuario
-     * @param null $idProducto identificador del producto (Opcional)
-     * @return array registros de la tabla producto
+     * @param null $idContacto identificador del contacto (Opcional)
+     * @return array registros de la tabla contacto
      * @throws Exception
      */
-    private function obtenerProductos($idUsuario, $idProducto = NULL)
+    private function obtenerContactos($idUsuario, $idContacto = NULL)
     {
         try {
-            if (!$idProducto) {
+            if (!$idContacto) {
                 $comando = "SELECT * FROM " . self::NOMBRE_TABLA .
                     " WHERE " . self::ID_USUARIO . "=?";
 
@@ -109,23 +112,24 @@ class productos
 
             } else {
                 $comando = "SELECT * FROM " . self::NOMBRE_TABLA .
-                    " WHERE " . self::ID_PRODUCTO . "=? AND " .
+                    " WHERE " . self::ID_CONTACTO . "=? AND " .
                     self::ID_USUARIO . "=?";
 
                 // Preparar sentencia
                 $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
-                // Ligar idProducto e idUsuario
-                $sentencia->bindParam(1, $idProducto, PDO::PARAM_INT);
+                // Ligar idContacto e idUsuario
+                $sentencia->bindParam(1, $idContacto, PDO::PARAM_INT);
                 $sentencia->bindParam(2, $idUsuario, PDO::PARAM_INT);
             }
 
             // Ejecutar sentencia preparada
             if ($sentencia->execute()) {
                 http_response_code(200);
-                return [
-                    "estado" => self::ESTADO_EXITO,
-                    "datos" => $sentencia->fetchAll(PDO::FETCH_ASSOC)
-                ];
+                return
+                    [
+                        "estado" => self::ESTADO_EXITO,
+                        "datos" => $sentencia->fetchAll(PDO::FETCH_ASSOC)
+                    ];
             } else
                 throw new ExcepcionApi(self::ESTADO_ERROR, "Se ha producido un error");
 
@@ -135,47 +139,46 @@ class productos
     }
 
     /**
-     * AÃ±ade un nuevo producto asociado a un usuario
+     * Añade un nuevo contacto asociado a un usuario
      * @param int $idUsuario identificador del usuario
-     * @param mixed $producto datos del producto
-     * @return string identificador del producto
+     * @param mixed $contacto datos del contacto
+     * @return string identificador del contacto
      * @throws ExcepcionApi
      */
-    private function crear($idUsuario, $producto)
+    private function crear($idUsuario, $contacto)
     {
-        if ($producto) {
+        if ($contacto) {
             try {
+
                 $pdo = ConexionBD::obtenerInstancia()->obtenerBD();
 
                 // Sentencia INSERT
                 $comando = "INSERT INTO " . self::NOMBRE_TABLA . " ( " .
-                    self::NOMBRE_PRODUCTO . "," .
-                    self::DESCRIPCION . "," .
-                    self::PRECIO . "," .
-                    self::STOCK . "," .
-                    self::CATEGORIA . "," .
+                    self::PRIMER_NOMBRE . "," .
+                    self::PRIMER_APELLIDO . "," .
+                    self::TELEFONO . "," .
+                    self::CORREO . "," .
                     self::ID_USUARIO . ")" .
-                    " VALUES(?,?,?,?,?,?)";
+                    " VALUES(?,?,?,?,?)";
 
                 // Preparar la sentencia
                 $sentencia = $pdo->prepare($comando);
 
-                $sentencia->bindParam(1, $nombreProducto);
-                $sentencia->bindParam(2, $descripcion);
-                $sentencia->bindParam(3, $precio);
-                $sentencia->bindParam(4, $stock);
-                $sentencia->bindParam(5, $categoria);
-                $sentencia->bindParam(6, $idUsuario);
+                $sentencia->bindParam(1, $primerNombre);
+                $sentencia->bindParam(2, $primerApellido);
+                $sentencia->bindParam(3, $telefono);
+                $sentencia->bindParam(4, $correo);
+                $sentencia->bindParam(5, $idUsuario);
 
-                $nombreProducto = $producto->nombreProducto;
-                $descripcion = $producto->descripcion;
-                $precio = $producto->precio;
-                $stock = $producto->stock;
-                $categoria = $producto->categoria;
+
+                $primerNombre = $contacto->primerNombre;
+                $primerApellido = $contacto->primerApellido;
+                $telefono = $contacto->telefono;
+                $correo = $contacto->correo;
 
                 $sentencia->execute();
 
-                // Retornar en el Ãºltimo id insertado
+                // Retornar en el último id insertado
                 return $pdo->lastInsertId();
 
             } catch (PDOException $e) {
@@ -184,46 +187,44 @@ class productos
         } else {
             throw new ExcepcionApi(
                 self::ESTADO_ERROR_PARAMETROS,
-                utf8_encode("Error en existencia o sintaxis de parÃ¡metros"));
+                utf8_encode("Error en existencia o sintaxis de parámetros"));
         }
+
     }
 
     /**
-     * Actualiza el producto especificado por idUsuario
+     * Actualiza el contacto especificado por idUsuario
      * @param int $idUsuario
-     * @param object $producto objeto con los valores nuevos del producto
-     * @param int $idProducto
+     * @param object $contacto objeto con los valores nuevos del contacto
+     * @param int $idContacto
      * @return PDOStatement
      * @throws Exception
      */
-    private function actualizar($idUsuario, $producto, $idProducto)
+    private function actualizar($idUsuario, $contacto, $idContacto)
     {
         try {
             // Creando consulta UPDATE
             $consulta = "UPDATE " . self::NOMBRE_TABLA .
-                " SET " . self::NOMBRE_PRODUCTO . "=?," .
-                self::DESCRIPCION . "=?," .
-                self::PRECIO . "=?," .
-                self::STOCK . "=?," .
-                self::CATEGORIA . "=? " .
-                " WHERE " . self::ID_PRODUCTO . "=? AND " . self::ID_USUARIO . "=?";
+                " SET " . self::PRIMER_NOMBRE . "=?," .
+                self::PRIMER_APELLIDO . "=?," .
+                self::TELEFONO . "=?," .
+                self::CORREO . "=? " .
+                " WHERE " . self::ID_CONTACTO . "=? AND " . self::ID_USUARIO . "=?";
 
             // Preparar la sentencia
             $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($consulta);
 
-            $sentencia->bindParam(1, $nombreProducto);
-            $sentencia->bindParam(2, $descripcion);
-            $sentencia->bindParam(3, $precio);
-            $sentencia->bindParam(4, $stock);
-            $sentencia->bindParam(5, $categoria);
-            $sentencia->bindParam(6, $idProducto);
-            $sentencia->bindParam(7, $idUsuario);
+            $sentencia->bindParam(1, $primerNombre);
+            $sentencia->bindParam(2, $primerApellido);
+            $sentencia->bindParam(3, $telefono);
+            $sentencia->bindParam(4, $correo);
+            $sentencia->bindParam(5, $idContacto);
+            $sentencia->bindParam(6, $idUsuario);
 
-            $nombreProducto = $producto->nombreProducto;
-            $descripcion = $producto->descripcion;
-            $precio = $producto->precio;
-            $stock = $producto->stock;
-            $categoria = $producto->categoria;
+            $primerNombre = $contacto->primerNombre;
+            $primerApellido = $contacto->primerApellido;
+            $telefono = $contacto->telefono;
+            $correo = $contacto->correo;
 
             // Ejecutar la sentencia
             $sentencia->execute();
@@ -235,25 +236,26 @@ class productos
         }
     }
 
+
     /**
-     * Elimina un producto asociado a un usuario
+     * Elimina un contacto asociado a un usuario
      * @param int $idUsuario identificador del usuario
-     * @param int $idProducto identificador del producto
-     * @return bool true si la eliminaciÃ³n se pudo realizar, en caso contrario false
+     * @param int $idContacto identificador del contacto
+     * @return bool true si la eliminación se pudo realizar, en caso contrario false
      * @throws Exception excepcion por errores en la base de datos
      */
-    private function eliminar($idUsuario, $idProducto)
+    private function eliminar($idUsuario, $idContacto)
     {
         try {
             // Sentencia DELETE
             $comando = "DELETE FROM " . self::NOMBRE_TABLA .
-                " WHERE " . self::ID_PRODUCTO . "=? AND " .
+                " WHERE " . self::ID_CONTACTO . "=? AND " .
                 self::ID_USUARIO . "=?";
 
             // Preparar la sentencia
             $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
 
-            $sentencia->bindParam(1, $idProducto);
+            $sentencia->bindParam(1, $idContacto);
             $sentencia->bindParam(2, $idUsuario);
 
             $sentencia->execute();
@@ -265,3 +267,4 @@ class productos
         }
     }
 }
+

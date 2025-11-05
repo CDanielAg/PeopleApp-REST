@@ -1,0 +1,31 @@
+POST
+
+http://127.0.0.1/~main/php/api.peopleapp.com/v1/usuarios/registro
+
+[
+	{
+		"nombre": "Anastasia Bell",
+		"contrasena": "TSM03HVY4VO",
+		"correo": "anastasiabell@icloud.org"
+	},
+	{
+		"nombre": "Walker Rollins",
+		"contrasena": "RPE55CBT6CF",
+		"correo": "walkerrollins8433@outlook.com"
+	},
+	{
+		"nombre": "Ursula Macias",
+		"contrasena": "IUE61ZHT7IW",
+		"correo": "ursulamacias5784@yahoo.net"
+	},
+	{
+		"nombre": "Nell Singleton",
+		"contrasena": "XNR81RJT2NT",
+		"correo": "nellsingleton@yahoo.org"
+	},
+	{
+		"nombre": "Rebecca Reeves",
+		"contrasena": "WUS47FQX5VB",
+		"correo": "rebeccareeves8774@yahoo.net"
+	}
+]

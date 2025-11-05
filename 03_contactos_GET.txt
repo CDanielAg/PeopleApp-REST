@@ -1,0 +1,21 @@
+Headers:
+Authorization : ? (claveApi)
+
+GET
+
+http://127.0.0.1/~main/php/api.peopleapp.com/v1/contactos
+
+{
+   "estado": 2,
+   "datos":    [
+            {
+         "idContacto": "",
+         "primerNombre": "",
+         "primerApellido": "",
+         "telefono": "",
+         "correo": "",
+         "idUsuario": ""
+      },
+      ...
+   ]
+}

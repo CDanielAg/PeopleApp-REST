@@ -1,0 +1,11 @@
+RewriteEngine on
+
+# Solo procesar si el archivo o directorio no existe físicamente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Capturar URLs con la estructura ~main/php/api.peopleapp.com/v1/ y extraer solo la ruta útil
+RewriteRule ^~main/php/api\.peopleapp\.com/v1/(.*)$ index.php?PATH_INFO=$1 [L,QSA]
+
+# Regla general para cualquier otra URL
+RewriteRule ^(.*)$ index.php?PATH_INFO=$1 [L,QSA]

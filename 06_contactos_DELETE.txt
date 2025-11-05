@@ -1,0 +1,7 @@
+Headers:
+Authorization : ? (claveApi)
+
+DELETE
+
+http://127.0.0.1/~main/php/api.peopleapp.com/v1/contactos/1
+

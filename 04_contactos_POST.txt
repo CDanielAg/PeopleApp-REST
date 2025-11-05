@@ -1,0 +1,39 @@
+Headers:
+Authorization : ? (claveApi)
+
+POST
+
+http://127.0.0.1/~main/php/api.peopleapp.com/v1/contactos
+
+[
+	{
+		"primerNombre": "Yael",
+		"primerApellido": "Robertson",
+		"telefono": "1-236-202-7030",
+		"correo": "robertson-yael5221@yahoo.edu"
+	},
+	{
+		"primerNombre": "Walker",
+		"primerApellido": "Wolf",
+		"telefono": "1-144-253-8507",
+		"correo": "wolf.walker@google.edu"
+	},
+	{
+		"primerNombre": "Flavia",
+		"primerApellido": "Valenzuela",
+		"telefono": "706-4813",
+		"correo": "fvalenzuela@outlook.com"
+	},
+	{
+		"primerNombre": "Yoko",
+		"primerApellido": "Marks",
+		"telefono": "862-8032",
+		"correo": "y-marks6650@yahoo.edu"
+	},
+	{
+		"primerNombre": "Rana",
+		"primerApellido": "Walker",
+		"telefono": "1-897-563-5558",
+		"correo": "walker-rana@hotmail.com"
+	}
+]

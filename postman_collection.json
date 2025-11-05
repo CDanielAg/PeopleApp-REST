@@ -1,0 +1,280 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "API REST - Usuarios y Contactos",
+		"description": "Colección de endpoints para la API REST de gestión de usuarios y contactos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Registro de Usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Anastasia Bell\",\n    \"contrasena\": \"TSM03HVY4VO\",\n    \"correo\": \"anastasiabell@icloud.org\"\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1/~main/php/api.peopleapp.com/v1/usuarios/registro",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"path": [
+								"~main",
+								"php",
+								"api.peopleapp.com",
+								"v1",
+								"usuarios",
+								"registro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login de Usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correo\": \"anastasiabell@icloud.org\",\n    \"contrasena\": \"TSM03HVY4VO\"\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1/~main/php/api.peopleapp.com/v1/usuarios/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"path": [
+								"~main",
+								"php",
+								"api.peopleapp.com",
+								"v1",
+								"usuarios",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contactos",
+			"item": [
+				{
+					"name": "Obtener Todos los Contactos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{claveApi}}",
+								"type": "text",
+								"description": "Reemplaza con tu claveApi obtenida del login"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1/~main/php/api.peopleapp.com/v1/contactos",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"path": [
+								"~main",
+								"php",
+								"api.peopleapp.com",
+								"v1",
+								"contactos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener un Contacto Específico",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{claveApi}}",
+								"type": "text",
+								"description": "Reemplaza con tu claveApi obtenida del login"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1/~main/php/api.peopleapp.com/v1/contactos/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"path": [
+								"~main",
+								"php",
+								"api.peopleapp.com",
+								"v1",
+								"contactos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear un Contacto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{claveApi}}",
+								"type": "text",
+								"description": "Reemplaza con tu claveApi obtenida del login"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"primerNombre\": \"Juan\",\n    \"primerApellido\": \"Pérez\",\n    \"telefono\": \"555-1234\",\n    \"correo\": \"juan@example.com\"\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1/~main/php/api.peopleapp.com/v1/contactos",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"path": [
+								"~main",
+								"php",
+								"api.peopleapp.com",
+								"v1",
+								"contactos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar un Contacto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{claveApi}}",
+								"type": "text",
+								"description": "Reemplaza con tu claveApi obtenida del login"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"primerNombre\": \"Juan Carlos\",\n    \"primerApellido\": \"Pérez García\",\n    \"telefono\": \"555-5678\",\n    \"correo\": \"juancarlos@example.com\"\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1/~main/php/api.peopleapp.com/v1/contactos/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"path": [
+								"~main",
+								"php",
+								"api.peopleapp.com",
+								"v1",
+								"contactos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar un Contacto",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{claveApi}}",
+								"type": "text",
+								"description": "Reemplaza con tu claveApi obtenida del login"
+							}
+						],
+						"url": {
+							"raw": "http://127.0.0.1/~main/php/api.peopleapp.com/v1/contactos/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"path": [
+								"~main",
+								"php",
+								"api.peopleapp.com",
+								"v1",
+								"contactos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "claveApi",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
